@@ -9,14 +9,14 @@ def main():
     clock = pygame.time.Clock() #Clock and delta time for FPS
     dt: float = 0.0
     
-    while True:         #The game loop, this updates the screen and check for user input... I think
+    while True:         # game loop, this updates the screen and check for user input... I think
         log_state()
         for event in pygame.event.get():
             pass
         screen.fill("black")
         pygame.display.flip()
-        dt = clock.tick(60) / 1000
-        print(dt)
+        dt = clock.tick(60) / 1000  # FPS limiter to 60
+        
         
         for event in pygame.event.get():    #makes it so the game doesn't need ctrl + c, but the x button to close
             if event.type == pygame.QUIT:
