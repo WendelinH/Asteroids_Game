@@ -1,6 +1,7 @@
 import pygame
 from constants import *
 from logger import log_state
+from player import *
 
 def main():
     pygame.init()
@@ -8,20 +9,20 @@ def main():
     
     clock = pygame.time.Clock() #Clock and delta time for FPS
     dt: float = 0.0
+
+    player = Player(x = SCREEN_WIDTH / 2, y = SCREEN_HEIGHT / 2)
     
     while True:         # game loop, this updates the screen and check for user input... I think
         log_state()
-        for event in pygame.event.get():
-            pass
-        screen.fill("black")
-        pygame.display.flip()
-        dt = clock.tick(60) / 1000  # FPS limiter to 60
-        
-        
+
         for event in pygame.event.get():    #makes it so the game doesn't need ctrl + c, but the x button to close
             if event.type == pygame.QUIT:
                 return
-        
+            
+        screen.fill("black")
+        player.draw(screen)
+        pygame.display.flip()       # brings picture to the screen
+        dt = clock.tick(60) / 1000  # FPS limiter to 60
         
 
     print(f"Starting Asteroids with pygame version: {pygame.version.ver}")
