@@ -10,6 +10,11 @@ def main():
     clock = pygame.time.Clock() #Clock and delta time for FPS
     dt: float = 0.0
 
+    updatable = pygame.sprite.Group()   # creates groups
+    drawable = pygame.sprite.Group()
+
+    Player.containers = (updatable, drawable) # adds player class to groups (x,y)
+
     player = Player(x = SCREEN_WIDTH / 2, y = SCREEN_HEIGHT / 2)
     
     while True:         # game loop, this updates the screen and check for user input... I think
@@ -20,8 +25,11 @@ def main():
                 return
             
         screen.fill("black")
-        player.update(dt)
-        player.draw(screen)
+
+        updatable.update(dt)
+        for object in drawable:
+            object.draw(screen)
+
         pygame.display.flip()       # brings picture to the screen
         dt = clock.tick(60) / 1000  # FPS limiter to 60
         
