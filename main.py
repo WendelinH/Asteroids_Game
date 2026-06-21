@@ -14,10 +14,10 @@ def main():
     clock = pygame.time.Clock() #Clock and delta time for FPS
     dt: float = 0.0
 
-    updatable = pygame.sprite.Group()   # creates groups
-    drawable = pygame.sprite.Group()
-    asteroids = pygame.sprite.Group()
-    shots = pygame.sprite.Group()
+    updatable: pygame.sprite.Group  = pygame.sprite.Group()   # creates groups
+    drawable: pygame.sprite.Group  = pygame.sprite.Group()
+    asteroids: pygame.sprite.Group[Asteroid] = pygame.sprite.Group()
+    shots: pygame.sprite.Group[Shot]  = pygame.sprite.Group()
 
     Player.containers = (updatable, drawable) # adds player class to groups (x,y)
     Asteroid.containers = (asteroids, updatable, drawable)
@@ -40,6 +40,13 @@ def main():
         updatable.update(dt)
         for object in drawable:
             object.draw(screen)
+
+        for asteroid in asteroids:
+            for shot in shots:
+                if asteroid.collides_with(shot):
+                    log_event("asteroid_shot")
+                    asteroid.kill()
+                    shot.kill()
 
         for object in asteroids:
             if object.collides_with(player):
