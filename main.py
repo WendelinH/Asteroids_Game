@@ -5,7 +5,7 @@ from player import *
 from asteroid import *
 from asteroidfield import *
 import sys
-from shot import *
+from shot import Shot
 
 def main():
     pygame.init()
