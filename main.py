@@ -7,11 +7,10 @@ from asteroidfield import *
 import sys
 from shot import Shot
 
-# TODO: Game over screen
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN) 
+    screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
     import constants 
     constants.SCREEN_WIDTH = screen.get_width() 
     constants.SCREEN_HEIGHT = screen.get_height()
@@ -33,10 +32,17 @@ def main():
     player = Player(x = screen.get_width() / 2, y = screen.get_height() / 2)
 
     pygame.font.init()
-    font = pygame.font.Font(None, 80)
+    gameover_font = pygame.font.Font(None, 80)
+    text_font = pygame.font.Font(None, 30)
+
     game_over = False
     
-    while True:         # game loop, this updates the screen and check for user input... I think
+    cursor = pygame.Surface((1, 1), pygame.SRCALPHA) # trying to make cursor invisible, does not work :(
+    cursor.fill((0, 0, 0, 0))
+    pygame.mouse.set_cursor((0, 0), cursor)
+    
+    while True:         # game loop, this updates the screen and check for user input
+
         log_state()
 
         for event in pygame.event.get():    #makes it so the game doesn't need ctrl + c, but the x button to close
@@ -44,6 +50,8 @@ def main():
                 return
             
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_r and game_over == True:
+                    return True
                 if event.key == pygame.K_ESCAPE:
                     return
                 
@@ -63,10 +71,18 @@ def main():
         for obj in drawable:
             obj.draw(screen)
         
-        if game_over:
-            text = font.render("GAME OVER", True, "white")
+        if game_over:   # draws the game over text
+            text = gameover_font.render("GAME OVER", True, "white")
             rect = text.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2))
             screen.blit(text, rect)
+
+            exit_text = text_font.render("press esc to EXIT", True, "white")
+            exit_rect = exit_text.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2 + 55))
+            screen.blit(exit_text, exit_rect)
+
+            restart_text = text_font.render("press R to RESTART", True, "white")
+            restart_rect = restart_text.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2 + 80))
+            screen.blit(restart_text, restart_rect)
 
         pygame.display.flip()       # brings picture to the screen
         dt = clock.tick(60) / 1000  # FPS limiter to 60
@@ -77,5 +93,8 @@ def main():
     print(f"Screen height: {SCREEN_HEIGHT}")
 
 
-if __name__ == "__main__":
-    main()
+if __name__ == "__main__":  # makes it so the current window gets closed after restart
+    while True:
+        restart = main() 
+        if restart is not True:
+            break
