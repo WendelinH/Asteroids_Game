@@ -11,7 +11,10 @@ from shot import Shot
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)    
+    screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN) 
+    import constants 
+    constants.SCREEN_WIDTH = screen.get_width() 
+    constants.SCREEN_HEIGHT = screen.get_height()
     clock = pygame.time.Clock() #Clock and delta time for FPS
     dt: float = 0.0
 
@@ -27,7 +30,11 @@ def main():
 
     asteroid_field = AsteroidField()
 
-    player = Player(x = SCREEN_WIDTH / 2, y = SCREEN_HEIGHT / 2)
+    player = Player(x = screen.get_width() / 2, y = screen.get_height() / 2)
+
+    pygame.font.init()
+    font = pygame.font.Font(None, 80)
+    game_over = False
     
     while True:         # game loop, this updates the screen and check for user input... I think
         log_state()
@@ -39,27 +46,27 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     return
-            
-        screen.fill("black")
-
-        updatable.update(dt)
-        for object in drawable:
-            object.draw(screen)
-
-        # FIXME: death after asteroid shot ghost hitbox
-
-        for asteroid in asteroids.sprites(): 
-            if asteroid.collides_with(player): 
-                log_event("player_hit") 
-                print("Game over!") 
-                sys.exit() 
                 
-            for shot in shots.sprites(): 
-                if asteroid.collides_with(shot): 
-                    log_event("asteroid_shot") 
-                    asteroid.split() 
-                    shot.kill() 
-                    break
+        if not game_over:
+            updatable.update(dt)
+            for asteroid in asteroids.sprites():
+                if asteroid.collides_with(player):
+                    game_over = True
+
+                for shot in shots.sprites():
+                    if asteroid.collides_with(shot):
+                        asteroid.split()
+                        shot.kill()
+                        break
+
+        screen.fill("black")
+        for obj in drawable:
+            obj.draw(screen)
+        
+        if game_over:
+            text = font.render("GAME OVER", True, "white")
+            rect = text.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2))
+            screen.blit(text, rect)
 
         pygame.display.flip()       # brings picture to the screen
         dt = clock.tick(60) / 1000  # FPS limiter to 60
