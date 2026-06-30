@@ -14,7 +14,7 @@ def main():
     import constants 
     constants.SCREEN_WIDTH = screen.get_width() 
     constants.SCREEN_HEIGHT = screen.get_height()
-    clock = pygame.time.Clock() #Clock and delta time for FPS
+    clock = pygame.time.Clock()     # Clock and delta time for FPS
     dt: float = 0.0
 
     updatable = pygame.sprite.Group()   # creates groups
@@ -45,7 +45,7 @@ def main():
 
         log_state()
 
-        for event in pygame.event.get():    #makes it so the game doesn't need ctrl + c, but the x button to close
+        for event in pygame.event.get():    # makes it so the game doesn't need ctrl + c, but the x button to close
             if event.type == pygame.QUIT:
                 return
             
