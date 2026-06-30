@@ -11,8 +11,7 @@ from shot import Shot
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    
+    screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)    
     clock = pygame.time.Clock() #Clock and delta time for FPS
     dt: float = 0.0
 
@@ -37,6 +36,10 @@ def main():
             if event.type == pygame.QUIT:
                 return
             
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    return
+            
         screen.fill("black")
 
         updatable.update(dt)
@@ -45,17 +48,18 @@ def main():
 
         # FIXME: death after asteroid shot ghost hitbox
 
-        for asteroid in asteroids:      #collisions between shots and asteroids!
-            if asteroid.collides_with(player):
-                log_event("player_hit")
-                print("Game over!")
-                sys.exit()
-
-            for shot in shots:
-                if asteroid.collides_with(shot):
-                    log_event("asteroid_shot")
-                    asteroid.split()
-                    shot.kill()
+        for asteroid in asteroids.sprites(): 
+            if asteroid.collides_with(player): 
+                log_event("player_hit") 
+                print("Game over!") 
+                sys.exit() 
+                
+            for shot in shots.sprites(): 
+                if asteroid.collides_with(shot): 
+                    log_event("asteroid_shot") 
+                    asteroid.split() 
+                    shot.kill() 
+                    break
 
         pygame.display.flip()       # brings picture to the screen
         dt = clock.tick(60) / 1000  # FPS limiter to 60
