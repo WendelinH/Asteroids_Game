@@ -7,6 +7,8 @@ from asteroidfield import *
 import sys
 from shot import Shot
 
+# TODO: Game over screen
+
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -14,10 +16,10 @@ def main():
     clock = pygame.time.Clock() #Clock and delta time for FPS
     dt: float = 0.0
 
-    updatable: pygame.sprite.Group  = pygame.sprite.Group()   # creates groups
-    drawable: pygame.sprite.Group  = pygame.sprite.Group()
-    asteroids: pygame.sprite.Group[Asteroid] = pygame.sprite.Group()
-    shots: pygame.sprite.Group[Shot]  = pygame.sprite.Group()
+    updatable = pygame.sprite.Group()   # creates groups
+    drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
+    shots = pygame.sprite.Group()
 
     Player.containers = (updatable, drawable) # adds player class to groups (x,y)
     Asteroid.containers = (asteroids, updatable, drawable)
@@ -40,6 +42,8 @@ def main():
         updatable.update(dt)
         for object in drawable:
             object.draw(screen)
+
+        # FIXME: death after asteroid shot ghost hitbox
 
         for asteroid in asteroids:      #collisions between shots and asteroids!
             if asteroid.collides_with(player):
