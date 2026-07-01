@@ -1,5 +1,6 @@
 from pygame import Surface
 from circleshape import *
+from circleshape import CircleShape
 from constants import PLAYER_RADIUS, LINE_WIDTH, PLAYER_TURN_SPEED, PLAYER_SPEED, PLAYER_SHOOT_SPEED, PLAYER_SHOOT_COOLDOWN_SECONDS
 from shot import *
 
@@ -17,6 +18,27 @@ class Player(CircleShape):
         c = self.position - forward * self.radius + right
         return [a, b, c]
     
+    def is_near_line(self, a, b, position, radius): # chek for collision with triangle
+        vekt_1 = b - a
+        vekt_2 = position - a
+        if vekt_1.length_squared() == 0:
+            return a.distance_to(position) < radius
+        t = vekt_2.dot(vekt_1) / vekt_1.length_squared()
+        t = max(0, min(1, t))
+        closest_point = a + vekt_1 * t
+        if closest_point.distance_to(position) < radius:
+            return True
+        return False
+
+    
+    def collides_with(self, other: CircleShape) -> bool:    # creates the triangle sides, uses is_near_line()
+        edgepoints = self.triangle()
+        for i in range(len(edgepoints)):
+            tup = (edgepoints[i], edgepoints[(i + 1) %3])
+            if self.is_near_line(tup[0], tup[1], other.position, other.radius):
+                return True
+        return False
+
     def draw(self, screen: pygame.Surface) -> None:     #draws player sprite
         pygame.draw.polygon(screen, "white", self.triangle(), LINE_WIDTH)
 

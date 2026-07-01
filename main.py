@@ -58,7 +58,7 @@ def main():
         if not game_over:
             updatable.update(dt)
             for asteroid in asteroids.sprites():
-                if asteroid.collides_with(player):
+                if player.collides_with(asteroid):  # uses player. collides with, else the circle collision would be used
                     game_over = True
 
                 for shot in shots.sprites():
