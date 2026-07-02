@@ -18,19 +18,18 @@ class Player(CircleShape):
         c = self.position - forward * self.radius + right
         return [a, b, c]
     
-    def is_near_line(self, a, b, position, radius): # chek for collision with triangle
-        vekt_1 = b - a
-        vekt_2 = position - a
-        if vekt_1.length_squared() == 0:
-            return a.distance_to(position) < radius
-        t = vekt_2.dot(vekt_1) / vekt_1.length_squared()
-        t = max(0, min(1, t))
-        closest_point = a + vekt_1 * t
-        if closest_point.distance_to(position) < radius:
+    def is_near_line(self, edgepoint_1, edgepoint_2, asteroid_position, asteroid_radius): # chek for collision with triangle
+        triangle_side = edgepoint_2 - edgepoint_1
+        edge_to_asteroid = asteroid_position - edgepoint_1
+        if triangle_side.length_squared() == 0:
+            return edgepoint_1.distance_to(asteroid_position) < asteroid_radius
+        scaler = edge_to_asteroid.dot(triangle_side) / triangle_side.length_squared()
+        scaler = max(0, min(1, scaler))
+        closest_point = edgepoint_1 + triangle_side * scaler
+        if closest_point.distance_to(asteroid_position) < asteroid_radius:
             return True
         return False
 
-    
     def collides_with(self, other: CircleShape) -> bool:    # creates the triangle sides, uses is_near_line()
         edgepoints = self.triangle()
         for i in range(len(edgepoints)):
