@@ -1,6 +1,5 @@
 import pygame
 from constants import *
-from logger import log_state, log_event
 from player import *
 from asteroid import *
 from asteroidfield import *
@@ -43,7 +42,6 @@ def main():
     
     while True:         # game loop, this updates the screen and check for user input
 
-        log_state()
 
         for event in pygame.event.get():    # makes it so the game doesn't need ctrl + c, but the x button to close
             if event.type == pygame.QUIT:
