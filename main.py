@@ -36,6 +36,8 @@ def main():
     cursor = pygame.Surface((1, 1), pygame.SRCALPHA) # trying to make cursor invisible, does not work :(
     cursor.fill((0, 0, 0, 0))
     pygame.mouse.set_cursor((0, 0), cursor)
+
+    background = pygame.image.load("./image/background.png").convert()
     
     while True:         # game loop, this updates the screen and check for user input
 
@@ -64,7 +66,7 @@ def main():
                         shot.kill()
                         break
 
-        screen.fill("black")
+        screen.blit(background, (0,0))
         for obj in drawable:
             obj.draw(screen)
         

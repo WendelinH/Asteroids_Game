@@ -5,14 +5,19 @@ from constants import PLAYER_RADIUS, LINE_WIDTH, PLAYER_TURN_SPEED, PLAYER_SPEED
 from shot import *
 
 class Player(CircleShape):
+    image_original: pygame.Surface = None
+
     def __init__(self, x: float, y: float,):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
         self.shot_cooldown = 0
+        if Player.image_original is None:
+            Player.image_original = pygame.image.load("./image/ship.png").convert_alpha()
+        self.image = self.image_original
 
     def triangle(self) -> list[pygame.Vector2]:     #triangle function
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
-        right = pygame.Vector2(0, 1).rotate(self.rotation + 90) * self.radius / 1.5
+        right = pygame.Vector2(0, 1).rotate(self.rotation + 90) * self.radius
         a = self.position + forward * self.radius
         b = self.position - forward * self.radius - right
         c = self.position - forward * self.radius + right
@@ -39,10 +44,12 @@ class Player(CircleShape):
         return False
 
     def draw(self, screen: pygame.Surface) -> None:     #draws player sprite
-        pygame.draw.polygon(screen, "white", self.triangle(), LINE_WIDTH)
+        screen.blit(self.image, self.position - pygame.Vector2(self.image.get_size()) / 2 - pygame.Vector2(0,6).rotate(self.rotation))
+        # pygame.draw.polygon(screen, "green", self.triangle(), LINE_WIDTH) # debug colision triangle
 
     def rotate(self, dt: float) -> None:        # rotater method
         self.rotation += PLAYER_TURN_SPEED * dt
+        self.image = pygame.transform.rotate(self.image_original, -self.rotation)
         
     def move(self, dt: float) -> None:      # mover method
         unit_vector = pygame.Vector2(0,1)
