@@ -69,15 +69,20 @@ def main():
             obj.draw(screen)
         
         if game_over:   # draws the game over text
-            text = gameover_font.render("GAME OVER", True, "white")
+            overlay = pygame.Surface((screen.get_width(), screen.get_height()))
+            overlay.set_alpha(20)
+            overlay.fill("gray")
+            screen.blit(overlay, (0, 0))
+
+            text = gameover_font.render("GAME OVER", True, "red")
             rect = text.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2))
             screen.blit(text, rect)
 
-            exit_text = text_font.render("press esc to EXIT", True, "white")
+            exit_text = text_font.render("press esc to EXIT", True, "orange")
             exit_rect = exit_text.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2 + 55))
             screen.blit(exit_text, exit_rect)
 
-            restart_text = text_font.render("press R to RESTART", True, "white")
+            restart_text = text_font.render("press R to RESTART", True, "blue")
             restart_rect = restart_text.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2 + 80))
             screen.blit(restart_text, restart_rect)
 
