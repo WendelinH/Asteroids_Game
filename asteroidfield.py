@@ -10,32 +10,32 @@ Edge = tuple[pygame.Vector2, Callable[[float], pygame.Vector2]]
 class AsteroidField(pygame.sprite.Sprite):
     containers: pygame.sprite.Group
 
-    edges: list[Edge] = [
-        (
-            pygame.Vector2(1, 0),
-            lambda y: pygame.Vector2(-ASTEROID_MAX_RADIUS, y * SCREEN_HEIGHT),
-        ),
-        (
-            pygame.Vector2(-1, 0),
-            lambda y: pygame.Vector2(
-                SCREEN_WIDTH + ASTEROID_MAX_RADIUS, y * SCREEN_HEIGHT
-            ),
-        ),
-        (
-            pygame.Vector2(0, 1),
-            lambda x: pygame.Vector2(x * SCREEN_WIDTH, -ASTEROID_MAX_RADIUS),
-        ),
-        (
-            pygame.Vector2(0, -1),
-            lambda x: pygame.Vector2(
-                x * SCREEN_WIDTH, SCREEN_HEIGHT + ASTEROID_MAX_RADIUS
-            ),
-        ),
-    ]
-
-    def __init__(self) -> None:
+    def __init__(self, screen: pygame.Surface) -> None:
         pygame.sprite.Sprite.__init__(self, self.containers)
         self.spawn_timer = 0.0
+
+        self.edges: list[Edge] = [
+            (
+                pygame.Vector2(1, 0),
+                lambda y: pygame.Vector2(-ASTEROID_MAX_RADIUS, y * screen.get_height()),
+            ),
+            (
+                pygame.Vector2(-1, 0),
+                lambda y: pygame.Vector2(
+                    screen.get_width() + ASTEROID_MAX_RADIUS, y * screen.get_height()
+                ),
+            ),
+            (
+                pygame.Vector2(0, 1),
+                lambda x: pygame.Vector2(x * screen.get_width(), -ASTEROID_MAX_RADIUS),
+            ),
+            (
+                pygame.Vector2(0, -1),
+                lambda x: pygame.Vector2(
+                    x * screen.get_width(), screen.get_height() + ASTEROID_MAX_RADIUS
+                ),
+            ),
+        ]
 
     def spawn(
         self, radius: float, position: pygame.Vector2, velocity: pygame.Vector2

@@ -10,9 +10,6 @@ from shot import Shot
 def main():
     pygame.init()
     screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-    import constants 
-    constants.SCREEN_WIDTH = screen.get_width() 
-    constants.SCREEN_HEIGHT = screen.get_height()
     clock = pygame.time.Clock()     # Clock and delta time for FPS
     dt: float = 0.0
 
@@ -26,7 +23,7 @@ def main():
     AsteroidField.containers = updatable
     Shot.containers = (shots, drawable, updatable)
 
-    asteroid_field = AsteroidField()
+    asteroid_field = AsteroidField(screen)
 
     player = Player(x = screen.get_width() / 2, y = screen.get_height() / 2)
 
@@ -42,7 +39,6 @@ def main():
     
     while True:         # game loop, this updates the screen and check for user input
 
-
         for event in pygame.event.get():    # makes it so the game doesn't need ctrl + c, but the x button to close
             if event.type == pygame.QUIT:
                 return
@@ -56,6 +52,9 @@ def main():
         if not game_over:
             updatable.update(dt)
             for asteroid in asteroids.sprites():
+                if asteroid.is_out_of_screen(screen):
+                    asteroid.kill()
+                    continue
                 if player.collides_with(asteroid):  # uses player. collides with, else the circle collision would be used
                     game_over = True
 
@@ -84,12 +83,6 @@ def main():
 
         pygame.display.flip()       # brings picture to the screen
         dt = clock.tick(60) / 1000  # FPS limiter to 60
-        
-
-    print(f"Starting Asteroids with pygame version: {pygame.version.ver}")
-    print(f"Screen width: {SCREEN_WIDTH}")
-    print(f"Screen height: {SCREEN_HEIGHT}")
-
 
 if __name__ == "__main__":  # makes it so the current window gets closed after restart
     while True:
