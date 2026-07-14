@@ -1,3 +1,5 @@
+import os
+
 import pygame
 from constants import *
 from player import *
@@ -37,7 +39,7 @@ def main():
     cursor.fill((0, 0, 0, 0))
     pygame.mouse.set_cursor((0, 0), cursor)
 
-    background = pygame.image.load("./image/background.png").convert()
+    background = pygame.image.load(os.path.join(BASE_PATH, "./image/background.png")).convert()
     
     while True:         # game loop, this updates the screen and check for user input
 

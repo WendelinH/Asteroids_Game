@@ -1,8 +1,9 @@
 from pygame import Surface
 from circleshape import *
 from circleshape import CircleShape
-from constants import PLAYER_RADIUS, LINE_WIDTH, PLAYER_TURN_SPEED, PLAYER_SPEED, PLAYER_SHOOT_SPEED, PLAYER_SHOOT_COOLDOWN_SECONDS
+from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED, PLAYER_SHOOT_SPEED, PLAYER_SHOOT_COOLDOWN_SECONDS, BASE_PATH, LINE_WIDTH
 from shot import *
+import os
 
 class Player(CircleShape):
     image_original: pygame.Surface = None
@@ -12,7 +13,7 @@ class Player(CircleShape):
         self.rotation = 0
         self.shot_cooldown = 0
         if Player.image_original is None:
-            Player.image_original = pygame.image.load("./image/ship.png").convert_alpha()
+            Player.image_original = pygame.image.load(os.path.join(BASE_PATH, "./image/ship.png")).convert_alpha()
         self.image = self.image_original
 
     def triangle(self) -> list[pygame.Vector2]:     #triangle function

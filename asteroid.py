@@ -1,8 +1,9 @@
 import pygame
 from circleshape import CircleShape
 from player import *
-from constants import LINE_WIDTH, ASTEROID_MIN_RADIUS, ASTEROID_MAX_RADIUS
+from constants import LINE_WIDTH, BASE_PATH, ASTEROID_MIN_RADIUS, ASTEROID_MAX_RADIUS
 import random
+import os
 
 class Asteroid(CircleShape):
     image_big: pygame.Surface = None
@@ -12,9 +13,9 @@ class Asteroid(CircleShape):
     def __init__(self, x: float, y: float, radius: float) -> None:
         super().__init__(x, y, radius)
         if Asteroid.image_big is None:
-            Asteroid.image_big = pygame.image.load("./image/asteorid-big.png").convert_alpha()
-            Asteroid.image_mid = pygame.image.load("./image/asteorid-mid.png").convert_alpha()
-            Asteroid.image_small = pygame.image.load("./image/asteorid-small.png").convert_alpha()
+            Asteroid.image_big = pygame.image.load(os.path.join(BASE_PATH, "./image/asteorid-big.png")).convert_alpha()
+            Asteroid.image_mid = pygame.image.load(os.path.join(BASE_PATH, "./image/asteorid-mid.png")).convert_alpha()
+            Asteroid.image_small = pygame.image.load(os.path.join(BASE_PATH, "./image/asteorid-small.png")).convert_alpha()
         if self.radius == ASTEROID_MAX_RADIUS:
             self.image = self.image_big
         elif self.radius == ASTEROID_MIN_RADIUS:
