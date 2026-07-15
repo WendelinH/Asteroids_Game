@@ -3,7 +3,9 @@
 ; Non-commercial use only
 
 #define MyAppName "Assteroids_Game"
-#define MyAppVersion "0.1.0"
+#ifndef MyAppVersion
+  #define MyAppVersion "0.1.0"
+#endif
 #define MyAppPublisher "wendelinh"
 #define MyAppURL "https://github.com/WendelinH/Asteroids_Game"
 #define MyAppExeName "Assteroids_Game.exe"

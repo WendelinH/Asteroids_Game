@@ -7,10 +7,10 @@ from asteroid import *
 from asteroidfield import *
 import sys
 from shot import Shot
+from _version import VERSION
 
 
 def main():
-    pygame.init()
     screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
     clock = pygame.time.Clock()     # Clock and delta time for FPS
     dt: float = 0.0
@@ -28,10 +28,6 @@ def main():
     asteroid_field = AsteroidField(screen)
 
     player = Player(x = screen.get_width() / 2, y = screen.get_height() / 2)
-
-    pygame.font.init()
-    gameover_font = pygame.font.Font(None, 80)
-    text_font = pygame.font.Font(None, 30)
 
     game_over = False
     
@@ -71,6 +67,7 @@ def main():
         screen.blit(background, (0,0))
         for obj in drawable:
             obj.draw(screen)
+        show_version(screen)
         
         if game_over:   # draws the game over text
             overlay = pygame.Surface((screen.get_width(), screen.get_height()))
@@ -93,7 +90,19 @@ def main():
         pygame.display.flip()       # brings picture to the screen
         dt = clock.tick(60) / 1000  # FPS limiter to 60
 
+def show_version(screen: pygame.Surface):
+    text = version_font.render(f"v{VERSION}", True, "#cdcdcd")
+    rect = pygame.Vector2(screen.get_width() - 100, screen.get_height() - 50) - text.get_size()
+    screen.blit(text, rect)
+
 if __name__ == "__main__":  # makes it so the current window gets closed after restart
+    pygame.init()
+
+    pygame.font.init()
+    gameover_font = pygame.font.Font(None, 80)
+    text_font = pygame.font.Font(None, 30)
+    version_font = pygame.font.SysFont("consolas", 30)
+
     while True:
         restart = main() 
         if restart is not True:
