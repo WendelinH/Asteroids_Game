@@ -12,7 +12,7 @@ set "CLR_WARN=%ESC%[93m"     :: Yellow
 set "CLR_ERROR=%ESC%[91m"    :: Red
 
 echo %CLR_HEADER%===================================================%CLR_RESET%
-echo %CLR_HEADER%             AUTO-BUILD \& RELEASE WORKFLOW          %CLR_RESET%
+echo %CLR_HEADER%                   AUTO-BUILD                      %CLR_RESET%
 echo %CLR_HEADER%===================================================%CLR_RESET%
 echo.
 
