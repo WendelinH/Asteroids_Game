@@ -59,6 +59,9 @@ def main():
                     game_over = True
 
                 for shot in shots.sprites():
+                    if shot.is_out_of_screen(screen):
+                        shot.kill()
+                        continue
                     if asteroid.collides_with(shot):
                         asteroid.split()
                         shot.kill()

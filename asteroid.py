@@ -42,11 +42,4 @@ class Asteroid(CircleShape):
         asteroid_2 = Asteroid(self.position.x, self.position.y, new_radius)
         asteroid_1.velocity = velocity_1 * 1.2
         asteroid_2.velocity = velocity_2 * 1.2
-    
-    def is_out_of_screen(self, screen: Surface):
-        if (self.position.x < -ASTEROID_MAX_RADIUS
-        or self.position.y < -ASTEROID_MAX_RADIUS
-        or self.position.x > screen.get_width() + ASTEROID_MAX_RADIUS
-        or self.position.y > screen.get_height() + ASTEROID_MAX_RADIUS):
-            return True
-        return False
+        

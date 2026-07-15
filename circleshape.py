@@ -26,3 +26,11 @@ class CircleShape(pygame.sprite.Sprite):
 
     def collides_with(self, other: CircleShape) -> bool:
         return self.radius + other.radius > self.position.distance_to(other.position)
+    
+    def is_out_of_screen(self, screen: pygame.Surface) -> bool:
+        if (self.position.x < - (self.radius + 20)
+        or self.position.y < - (self.radius + 20)
+        or self.position.x > screen.get_width() +  (self.radius + 20)
+        or self.position.y > screen.get_height() +  (self.radius + 20)):
+            return True
+        return False
