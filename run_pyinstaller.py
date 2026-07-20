@@ -5,5 +5,6 @@ PyInstaller.__main__.run([
     "--name=Assteroids_Game",
     "--windowed",
     "--icon=./image/icon.ico",
-    "--add-data=./image:image"
+    "--add-data=./image:image",
+    "--add-data=./fonts:fonts"
 ])
