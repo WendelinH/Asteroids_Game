@@ -1,0 +1,6 @@
+2026-07-20 add score +astro @gameplay
+2026-07-20 add astro drop item/loot/upgrades +astro @gameplay
+2026-07-20 add enemy +astro @gameplay
+2026-07-20 add different guns +astro @gameplay
+2026-07-20 update ui and images +astro @visual
+2026-07-20 add sounds +astro @audio

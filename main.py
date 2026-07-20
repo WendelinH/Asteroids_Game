@@ -6,6 +6,7 @@ from player import *
 from asteroid import *
 from asteroidfield import *
 import sys
+from score import Score
 from shot import Shot
 from _version import VERSION
 
@@ -65,12 +66,14 @@ def main():
                     if asteroid.collides_with(shot):
                         asteroid.split()
                         shot.kill()
+                        Score().increase()
                         break
 
         screen.blit(background, (0,0))
         for obj in drawable:
             obj.draw(screen)
         show_version(screen)
+        Score().draw(screen, text_mid_font, "white")
         
         if game_over:   # draws the game over text
             overlay = pygame.Surface((screen.get_width(), screen.get_height()))
@@ -82,11 +85,11 @@ def main():
             rect = text.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2))
             screen.blit(text, rect)
 
-            exit_text = text_font.render("press esc to EXIT", True, "orange")
+            exit_text = text_small_font.render("press esc to EXIT", True, "orange")
             exit_rect = exit_text.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2 + 55))
             screen.blit(exit_text, exit_rect)
 
-            restart_text = text_font.render("press R to RESTART", True, "blue")
+            restart_text = text_small_font.render("press R to RESTART", True, "blue")
             restart_rect = restart_text.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2 + 80))
             screen.blit(restart_text, restart_rect)
 
@@ -95,18 +98,22 @@ def main():
 
 def show_version(screen: pygame.Surface):
     text = version_font.render(f"v{VERSION}", True, "#cdcdcd")
-    rect = pygame.Vector2(screen.get_width() - 100, screen.get_height() - 50) - text.get_size()
+    rect = pygame.Vector2(screen.get_width() - 50, screen.get_height() - 50) - text.get_size()
     screen.blit(text, rect)
 
 if __name__ == "__main__":  # makes it so the current window gets closed after restart
     pygame.init()
 
     pygame.font.init()
-    gameover_font = pygame.font.Font(None, 80)
-    text_font = pygame.font.Font(None, 30)
-    version_font = pygame.font.SysFont("consolas", 30)
+    main_font_path = os.path.join(BASE_PATH, "fonts/BoldPixels.ttf")
+    version_font_path = os.path.join(BASE_PATH, "fonts/QuinqueFive.ttf")
+    gameover_font = pygame.font.Font(main_font_path, 80)
+    text_mid_font = pygame.font.Font(main_font_path, 50)
+    text_small_font = pygame.font.Font(main_font_path, 30)
+    version_font = pygame.font.Font(version_font_path, 20)
 
     while True:
+        Score().reset()
         restart = main() 
         if restart is not True:
             break
