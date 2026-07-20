@@ -4,5 +4,6 @@ x 2026-07-20 2026-07-20 add score +astro @gameplay
 2026-07-20 add different guns +astro @gameplay
 2026-07-20 update ui and images +astro @visual
 2026-07-20 add sounds +astro @audio
-2026-07-20 safe score in sqlite DB +astro @data
+x 2026-07-20 2026-07-20 safe score in sqlite DB +astro @data
 2026-07-20 add stats +astro @data
+2026-07-20 render text with offset acording to font hight +astro @visual @refactor

@@ -2,10 +2,10 @@ import os
 
 import pygame
 from constants import *
+from database import ScoreDatabase
 from player import *
 from asteroid import *
 from asteroidfield import *
-import sys
 from score import Score
 from shot import Shot
 from _version import VERSION
@@ -58,6 +58,7 @@ def main():
                     continue
                 if player.collides_with(asteroid):  # uses player. collides with, else the circle collision would be used
                     game_over = True
+                    db.save_score()
 
                 for shot in shots.sprites():
                     if shot.is_out_of_screen(screen):
@@ -73,7 +74,9 @@ def main():
         for obj in drawable:
             obj.draw(screen)
         show_version(screen)
-        Score().draw(screen, text_mid_font, "white")
+        
+        if not game_over:
+            Score().draw(screen, text_mid_font, "white")
         
         if game_over:   # draws the game over text
             overlay = pygame.Surface((screen.get_width(), screen.get_height()))
@@ -82,16 +85,20 @@ def main():
             screen.blit(overlay, (0, 0))
 
             text = gameover_font.render("GAME OVER", True, "red")
-            rect = text.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2))
+            rect = text.get_rect(center=(screen.get_width() / 2, screen.get_height() / 4))
             screen.blit(text, rect)
 
             exit_text = text_small_font.render("press esc to EXIT", True, "orange")
-            exit_rect = exit_text.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2 + 55))
+            exit_rect = exit_text.get_rect(center=rect.center)
+            exit_rect.top += 55
             screen.blit(exit_text, exit_rect)
 
             restart_text = text_small_font.render("press R to RESTART", True, "blue")
-            restart_rect = restart_text.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2 + 80))
+            restart_rect = exit_text.get_rect(center=exit_rect.center)
+            restart_rect.top += 25
             screen.blit(restart_text, restart_rect)
+
+            Score().draw_leaderboard(screen, text_mid_font, "white", restart_rect.top)
 
         pygame.display.flip()       # brings picture to the screen
         dt = clock.tick(60) / 1000  # FPS limiter to 60
@@ -112,8 +119,10 @@ if __name__ == "__main__":  # makes it so the current window gets closed after r
     text_small_font = pygame.font.Font(main_font_path, 30)
     version_font = pygame.font.Font(version_font_path, 20)
 
+    db = ScoreDatabase()
+
     while True:
+        restart = main()
         Score().reset()
-        restart = main() 
         if restart is not True:
             break
