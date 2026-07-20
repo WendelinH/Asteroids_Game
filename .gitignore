@@ -222,3 +222,4 @@ __marimo__/
 game_state.jsonl
 game_events.jsonl
 release/
+*.db
